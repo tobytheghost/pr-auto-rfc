@@ -23,47 +23,44 @@ import { getPullRequest } from "./queries/getPullRequest";
 
     const { body } = await getPullRequest({ octokit, owner, repo, number });
 
-    const matchRequiredChecklist =
-      /(?<=<!--- rfc-checklist -->\r\n)((?:.|\r|\n)*?)(?=<!--- rfc-checklist -->\r\n)/gi;
+    const [_, ...forms] = body.split("<!--- rfc-form -->");
 
-    const checklistMatches =
-      body.match(matchRequiredChecklist) || ([] as string[]);
+    if (!forms.length) return;
 
-    const checkListErrors = checklistMatches
-      .map((list) => {
-        const listItems = list.split("\n");
-        const missingItems = listItems.filter((item) =>
-          item.startsWith("- [ ]")
-        );
-        if (!missingItems.length) return [];
-        return [
-          `Please review and check the following items:`,
-          missingItems.join("\n"),
-        ];
-      })
-      .reduce((acc, curr) => [...acc, ...curr], []);
+    const checkedForms = forms.map((form) => {
+      const formFields = form.split("<!--- rfc-end -->");
+      const checkedFields = formFields.map((field) => {
+        const title = /## (.*)/.exec(field)?.[1];
+        const type = /<!--- rfc-input-(.*) -->/.exec(field)?.[1];
 
-    const matchRequiredRadio =
-      /(?<=<!--- rfc-radio -->\r\n)((?:.|\r|\n)*?)(?=<!--- rfc-radio -->\r\n)/gi;
+        if (type === "checklist") {
+          const missingChecklistItems = field
+            .split("\n")
+            .filter((item) => item.startsWith("- [ ]"));
+          if (!missingChecklistItems.length) return;
+          return `Please review and check the following items\n${title}\n${missingChecklistItems.join(
+            "\n"
+          )}\n`;
+        }
 
-    const radioMatches = body.match(matchRequiredRadio) || ([] as string[]);
+        if (type === "radio") {
+          const missingRadioItems = field
+            .split("\n")
+            .filter((item) => item.startsWith("- [ ]"));
+          if (!missingRadioItems.length) return;
+          return `Please review and check at least one of the following items\n${title}\n${missingRadioItems.join(
+            "\n"
+          )}\n`;
+        }
 
-    const radioListErrors = radioMatches
-      .map((list) => {
-        const listItems = list.split("\n");
-        const missingItems = listItems.filter((item) =>
-          item.startsWith("- [ ]")
-        );
-        if (!missingItems.length) return [];
-        return [
-          `Please review and check at least one of the following items:`,
-          missingItems.join("\n"),
-        ];
-      })
-      .reduce((acc, curr) => [...acc, ...curr], []);
+        return;
+      }).reduce((acc, curr) => [...acc, ...curr], [] as string[]);
 
-    if (checkListErrors.length || radioListErrors.length) {
-      throw new Error([...checkListErrors, ...radioListErrors].join("\n\n"));
+      return checkedFields;
+    }).reduce((acc, curr) => [...acc, ...curr], [] as string[]);
+
+    if (checkedForms.length) {
+      throw new Error([...checkedForms].join("\n\n"));
     }
   } catch (error) {
     setFailed(error.message);
