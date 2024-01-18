@@ -23,15 +23,15 @@ import { getPullRequest } from "./queries/getPullRequest";
 
     const { body } = await getPullRequest({ octokit, owner, repo, number });
 
-    const [_, ...forms] = body.split("<!--- r-form -->");
+    const [_, ...forms] = body.split("<!--- [r-form] -->");
 
     if (!forms.length) return console.log("No forms found in PR body");
 
     const checkedForms = forms
       .map((form) => {
-        const formFields = form.split("<!--- r-input-");
+        const formFields = form.split("<!--- [r-input-");
         return formFields.map((field) => {
-          const type = /(.*) -->/.exec(field)?.[1];
+          const type = /(.*)] -->/.exec(field)?.[1];
           const title = /# (.*)/.exec(field)?.[1];
           if (!type || !title) throw new Error("Invalid form field ${field}");
 
