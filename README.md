@@ -14,8 +14,6 @@ on:
       - opened
       - edited
       - synchronize
-      - labeled
-      - unlabeled
 jobs:
   pr-auto-label-action:
     runs-on: ubuntu-latest
