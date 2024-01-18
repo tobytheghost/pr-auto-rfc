@@ -56,8 +56,8 @@ import { getPullRequest } from "./queries/getPullRequest";
         if (type === "text") {
           // Get value, remove title, remove comments & trim
           const value = field.split(`${title}\r\n`)[1].replace(/<!--- (.*?) -->/gi, "").trim();
-          if(value.length) return;
-          return `Please fill in the following field\n\n${title}\n`;
+          if(value.length)return;
+          return `Please fill in the following field: "${title}"\n`;
         }
 
         return;
