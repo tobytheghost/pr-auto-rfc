@@ -29920,7 +29920,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
             const checkedForms = forms.map((form) => {
                 const formFields = form.split("<!--- rfc-end -->");
                 return formFields.map((field) => {
-                    var _a, _b, _c;
+                    var _a, _b;
                     const title = (_a = /# (.*)/.exec(field)) === null || _a === void 0 ? void 0 : _a[1];
                     const type = (_b = /<!--- rfc-input-(.*) -->/.exec(field)) === null || _b === void 0 ? void 0 : _b[1];
                     if (type === "checklist") {
@@ -29940,7 +29940,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                         return `Please review and check at least one of the following items\n\n${title}\n${missingRadioItems.join("\n")}\n`;
                     }
                     if (type === "text") {
-                        const value = (_c = /<!--- rfc-value -->\r\n(.*)\r\n<!--- rfc-value -->/.exec(field)) === null || _c === void 0 ? void 0 : _c[1].trim();
+                        const value = field.split(`${title}\r\n`)[1].trim();
                         console.log("value", value);
                     }
                     return;
