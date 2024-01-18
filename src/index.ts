@@ -38,7 +38,7 @@ import { getPullRequest } from "./queries/getPullRequest";
             .split("\n")
             .filter((item) => item.startsWith("- [ ]"));
           if (!missingChecklistItems.length) return;
-          return `Please review and check the following items\n\n${title}\n${missingChecklistItems.join(
+          return `Please review and check the following items:\n${title}\n${missingChecklistItems.join(
             "\n"
           )}\n`;
         }
@@ -48,7 +48,7 @@ import { getPullRequest } from "./queries/getPullRequest";
             .split("\n")
             .filter((item) => item.startsWith("- [ ]"));
           if (!missingRadioItems.length) return;
-          return `Please review and check at least one of the following items\n\n${title}\n${missingRadioItems.join(
+          return `Please review and check at least one of the following items:\n${title}\n${missingRadioItems.join(
             "\n"
           )}\n`;
         }
