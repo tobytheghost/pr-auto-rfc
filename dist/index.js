@@ -29919,7 +29919,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                 return;
             const checkedForms = forms.map((form) => {
                 const formFields = form.split("<!--- rfc-end -->");
-                const checkedFields = formFields.map((field) => {
+                return formFields.map((field) => {
                     var _a, _b;
                     const title = (_a = /## (.*)/.exec(field)) === null || _a === void 0 ? void 0 : _a[1];
                     const type = (_b = /<!--- rfc-input-(.*) -->/.exec(field)) === null || _b === void 0 ? void 0 : _b[1];
@@ -29940,8 +29940,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                         return `Please review and check at least one of the following items\n${title}\n${missingRadioItems.join("\n")}\n`;
                     }
                     return;
-                }).reduce((acc, curr) => [...acc, ...curr], []);
-                return checkedFields;
+                });
             }).reduce((acc, curr) => [...acc, ...curr], []);
             if (checkedForms.length) {
                 throw new Error([...checkedForms].join("\n\n"));
