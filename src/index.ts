@@ -51,7 +51,7 @@ import { getPullRequest } from "./queries/getPullRequest";
     const radioListErrors = radioMatches.map((list) => {
       const listItems = list.split("\n");
       const missingItems = listItems.filter((item) => item.startsWith("- [ ]"));
-      if (missingItems.length) return [];
+      if (!missingItems.length) return [];
       return [
         `Please review and check at least one of the following items:`,
         missingItems.join("\n"),
