@@ -28199,7 +28199,22 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
         const repo = github.context.repo.repo;
         const octokit = (0,github.getOctokit)(token);
         const { body } = yield getPullRequest({ octokit, owner, repo, number });
-        console.log(body);
+        const matchRequiredChecklist = /(?<=<!--- rfc-checklist -->\n)((?:.|\n)*?)(?=\n<!--- rfc-checklist -->)/gi;
+        body.match(matchRequiredChecklist).forEach((list) => {
+            list.split("\n").forEach((item) => {
+                if (item.startsWith("- [ ]"))
+                    console.log(`Missing checklist item: ${item.replace("- [ ]", "")}`);
+            });
+        });
+        const matchRequiredRadio = /(?<=<!--- rfc-radio -->\n)((?:.|\n)*?)(?=\n<!--- rfc-radio -->)/gi;
+        body.match(matchRequiredRadio).forEach((list) => {
+            const listItems = list.split("\n");
+            const checkedItems = listItems.filter((item) => item.startsWith("- [x]"));
+            if (checkedItems.length === 0) {
+                console.log(`Please check one of the following items:`);
+                console.log(listItems.join("\n"));
+            }
+        });
     });
 })();
 
