@@ -29944,7 +29944,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                         const value = field.split(`${title}\r\n`)[1].replace(/<!--- (.*?) -->/gi, "").trim();
                         if (value.length)
                             return;
-                        return `Please fill in the following field\n\n${title}\n`;
+                        return `Please fill in the following field: "${title}"\n`;
                     }
                     return;
                 });
