@@ -20,7 +20,25 @@ import { getPullRequest } from "./queries/getPullRequest";
 
   const { body } = await getPullRequest({ octokit, owner, repo, number });
 
-  console.log(body);
+  const matchRequiredChecklist =
+    /(?<=<!--- rfc-checklist -->\n)((?:.|\n)*?)(?=\n<!--- rfc-checklist -->)/gi;
 
-  // const match = /(?<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)(.*)(?=<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)/g;
+  body.match(matchRequiredChecklist).forEach((list) => {
+    list.split("\n").forEach((item) => {
+      if (item.startsWith("- [ ]"))
+        console.log(`Missing checklist item: ${item.replace("- [ ]", "")}`);
+    });
+  });
+
+  const matchRequiredRadio =
+    /(?<=<!--- rfc-radio -->\n)((?:.|\n)*?)(?=\n<!--- rfc-radio -->)/gi;
+
+  body.match(matchRequiredRadio).forEach((list) => {
+    const listItems = list.split("\n");
+    const checkedItems = listItems.filter((item) => item.startsWith("- [x]"));
+    if (checkedItems.length === 0) {
+      console.log(`Please check one of the following items:`);
+      console.log(listItems.join("\n"));
+    }
+  });
 })();
