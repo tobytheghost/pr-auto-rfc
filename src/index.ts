@@ -23,7 +23,11 @@ import { getPullRequest } from "./queries/getPullRequest";
   const matchRequiredChecklist =
     /(?<=<!--- rfc-checklist -->\n)((?:.|\n)*?)(?=\n<!--- rfc-checklist -->)/gi;
 
-  body.match(matchRequiredChecklist).forEach((list) => {
+  const checklistMatches = body.match(matchRequiredChecklist);
+
+  console.log(checklistMatches);
+  
+  checklistMatches?.forEach((list) => {
     list.split("\n").forEach((item) => {
       if (item.startsWith("- [ ]"))
         console.log(`Missing checklist item: ${item.replace("- [ ]", "")}`);
@@ -33,7 +37,11 @@ import { getPullRequest } from "./queries/getPullRequest";
   const matchRequiredRadio =
     /(?<=<!--- rfc-radio -->\n)((?:.|\n)*?)(?=\n<!--- rfc-radio -->)/gi;
 
-  body.match(matchRequiredRadio).forEach((list) => {
+  const radioMatches = body.match(matchRequiredRadio)
+  
+  console.log(radioMatches);
+
+  radioMatches?.forEach((list) => {
     const listItems = list.split("\n");
     const checkedItems = listItems.filter((item) => item.startsWith("- [x]"));
     if (checkedItems.length === 0) {
