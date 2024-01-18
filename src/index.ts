@@ -25,7 +25,7 @@ import { getPullRequest } from "./queries/getPullRequest";
 
     const [_, ...forms] = body.split("<!--- rfc-form -->");
 
-    if (!forms.length) return;
+    if (!forms.length) return console.log("No forms found in PR body");
 
     const checkedForms = forms.map((form) => {
       const formFields = form.split("<!--- rfc-end -->");
