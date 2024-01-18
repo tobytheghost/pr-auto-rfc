@@ -31,8 +31,8 @@ import { getPullRequest } from "./queries/getPullRequest";
       .map((form) => {
         const formFields = form.split("<!--- [r-input-");
         return formFields.map((field) => {
-          const type = /(.*)] -->/.exec(field)?.[1];
-          const title = /# (.*)/.exec(field)?.[1];
+          const type = /(.*)] -->/.exec(field)?.[1].trim();
+          const title = /# (.*)/.exec(field)?.[1].trim();
           if (!type || !title) return;
 
           if (type === "checklist") {
