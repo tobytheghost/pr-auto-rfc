@@ -20,9 +20,11 @@ import { getPullRequest } from "./queries/getPullRequest";
 
   const { body } = await getPullRequest({ octokit, owner, repo, number });
 
+  console.log(body);
+
   const match = /(?<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)(.*)(?=<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)/g;
 
-  const matches = body.match(match);
+  const matches = body.match(match).map((match) => match.trim());
 
   console.log(matches);
 })();
