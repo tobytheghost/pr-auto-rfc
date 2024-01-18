@@ -1,0 +1,7 @@
+name: PR Auto Label Action
+description: Automatically label PRs
+author: tobytheghost
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
