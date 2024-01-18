@@ -54,7 +54,7 @@ import { getPullRequest } from "./queries/getPullRequest";
         }
 
         if (type === "text") {
-          const value = /<!--- rfc-value -->\r\n(.*)\r\n<!--- rfc-value -->/.exec(field)?.[1].trim();
+          const value = field.split(`${title}\r\n`)[1].trim();
           console.log("value", value);
         }
 
