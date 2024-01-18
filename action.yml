@@ -1,5 +1,5 @@
-name: PR Auto Label Action
-description: Automatically label PRs
+name: PR Auto RFC
+description: Automatically check the questions in the Pull Request Template have been answered
 author: tobytheghost
 
 runs:
