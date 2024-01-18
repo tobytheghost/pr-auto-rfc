@@ -29925,7 +29925,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                     const type = (_a = /(.*)] -->/.exec(field)) === null || _a === void 0 ? void 0 : _a[1];
                     const title = (_b = /# (.*)/.exec(field)) === null || _b === void 0 ? void 0 : _b[1];
                     if (!type || !title)
-                        throw new Error("Invalid form field ${field}");
+                        throw new Error(`Invalid form field ${field}`);
                     if (type === "checklist") {
                         const missingChecklistItems = field
                             .split("\n")
