@@ -18,7 +18,7 @@ jobs:
   pr-auto-label-action:
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: write
+      pull-requests: read
     steps:
       - uses: tobytheghost/pr-auto-label-action@main
         env:
