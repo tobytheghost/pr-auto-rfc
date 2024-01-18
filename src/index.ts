@@ -23,7 +23,7 @@ import { getPullRequest } from "./queries/getPullRequest";
   console.log(body);
 
   const matchRequiredChecklist =
-    /(?<=<!--- rfc-checklist -->\n)((?:.|\n)*?)(?=\n<!--- rfc-checklist -->)/gi;
+    /(?<=<!--- rfc-checklist -->)((?:.|\n)*?)(?=<!--- rfc-checklist -->)/gi;
 
   const checklistMatches = body.match(matchRequiredChecklist);
 
@@ -37,7 +37,7 @@ import { getPullRequest } from "./queries/getPullRequest";
   });
 
   const matchRequiredRadio =
-    /(?<=<!--- rfc-radio -->\n)((?:.|\n)*?)(?=\n<!--- rfc-radio -->)/gi;
+    /(?<=<!--- rfc-radio -->)((?:.|\n)*?)(?=<!--- rfc-radio -->)/gi;
 
   const radioMatches = body.match(matchRequiredRadio);
 
