@@ -29,7 +29,7 @@ import { getPullRequest } from "./queries/getPullRequest";
 
     const checkedForms = forms.map((form) => {
       const formFields = form.split("<!--- rfc-end -->");
-      const checkedFields = formFields.map((field) => {
+      return formFields.map((field) => {
         const title = /## (.*)/.exec(field)?.[1];
         const type = /<!--- rfc-input-(.*) -->/.exec(field)?.[1];
 
@@ -54,9 +54,7 @@ import { getPullRequest } from "./queries/getPullRequest";
         }
 
         return;
-      }).reduce((acc, curr) => [...acc, ...curr], [] as string[]);
-
-      return checkedFields;
+      });
     }).reduce((acc, curr) => [...acc, ...curr], [] as string[]);
 
     if (checkedForms.length) {
