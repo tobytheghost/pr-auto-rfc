@@ -1,7 +1,8 @@
+import { setFailed } from "@actions/core";
 import { context, getOctokit } from "@actions/github";
 import { getPullRequest } from "./queries/getPullRequest";
 
-(async function main() {
+try {
   console.log("Starting action");
 
   if (context.eventName !== "pull_request") {
@@ -56,4 +57,6 @@ import { getPullRequest } from "./queries/getPullRequest";
   if (checkListErrors.length || radioListErrors.length) {
     throw new Error([...checkListErrors, ...radioListErrors].join("\n"));
   }
-})();
+} catch (error) {
+  setFailed(error.message);
+}
