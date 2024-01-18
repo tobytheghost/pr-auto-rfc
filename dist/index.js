@@ -28199,9 +28199,11 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
         const repo = github.context.repo.repo;
         const octokit = (0,github.getOctokit)(token);
         const { body } = yield getPullRequest({ octokit, owner, repo, number });
-        console.log(body);
+        console.log({ body });
         const matchRequiredChecklist = /(?<=<!--- rfc-checklist -->)((?:.|\n)*?)(?=<!--- rfc-checklist -->)/gi;
         const checklistMatches = body.match(matchRequiredChecklist);
+        console.log(checklistMatches);
+        console.log(/<!--- rfc-checklist -->/gi.test(body));
         checklistMatches === null || checklistMatches === void 0 ? void 0 : checklistMatches.forEach((list) => {
             const listItems = list.split("\n");
             const missingItems = listItems.filter((item) => item.startsWith("- [ ]"));
@@ -28212,6 +28214,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
         });
         const matchRequiredRadio = /(?<=<!--- rfc-radio -->)((?:.|\n)*?)(?=<!--- rfc-radio -->)/gi;
         const radioMatches = body.match(matchRequiredRadio);
+        console.log(radioMatches);
         radioMatches === null || radioMatches === void 0 ? void 0 : radioMatches.forEach((list) => {
             const listItems = list.split("\n");
             const checkedItems = listItems.filter((item) => item.startsWith("- [x]"));
