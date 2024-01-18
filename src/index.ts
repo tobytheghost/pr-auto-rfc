@@ -22,9 +22,5 @@ import { getPullRequest } from "./queries/getPullRequest";
 
   console.log(body);
 
-  const match = /(?<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)(.*)(?=<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)/g;
-
-  const matches = body.match(match).map((match) => match.trim());
-
-  console.log(matches);
+  // const match = /(?<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)(.*)(?=<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)/g;
 })();
