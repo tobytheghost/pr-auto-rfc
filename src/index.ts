@@ -33,7 +33,7 @@ import { getPullRequest } from "./queries/getPullRequest";
         return formFields.map((field) => {
           const type = /(.*)] -->/.exec(field)?.[1];
           const title = /# (.*)/.exec(field)?.[1];
-          if (!type || !title) throw new Error("Invalid form field ${field}");
+          if (!type || !title) throw new Error(`Invalid form field ${field}`);
 
           if (type === "checklist") {
             const missingChecklistItems = field
