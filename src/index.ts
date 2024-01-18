@@ -20,16 +20,12 @@ import { getPullRequest } from "./queries/getPullRequest";
 
   const { body } = await getPullRequest({ octokit, owner, repo, number });
 
-  console.log({ body });
-
   const matchRequiredChecklist =
-    /(?<=<!--- rfc-checklist -->)((?:.|\n)*?)(?=<!--- rfc-checklist -->)/gi;
+    /(?<=<!--- rfc-checklist -->\r\n)((?:.|\r|\n)*?)(?=<!--- rfc-checklist -->\r\n)/gi;
 
   const checklistMatches = body.match(matchRequiredChecklist);
 
   console.log(checklistMatches);
-
-  console.log(/<!--- rfc-checklist -->/gi.test(body));
 
   checklistMatches?.forEach((list) => {
     const listItems = list.split("\n");
@@ -41,7 +37,7 @@ import { getPullRequest } from "./queries/getPullRequest";
   });
 
   const matchRequiredRadio =
-    /(?<=<!--- rfc-radio -->)((?:.|\n)*?)(?=<!--- rfc-radio -->)/gi;
+    /(?<=<!--- rfc-radio -->\r\n)((?:.|\r|\n)*?)(?=<!--- rfc-radio -->\r\n)/gi;
 
   const radioMatches = body.match(matchRequiredRadio);
 
