@@ -29922,8 +29922,8 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                 const formFields = form.split("<!--- [r-input-");
                 return formFields.map((field) => {
                     var _a, _b;
-                    const type = (_a = /(.*)] -->/.exec(field)) === null || _a === void 0 ? void 0 : _a[1];
-                    const title = (_b = /# (.*)/.exec(field)) === null || _b === void 0 ? void 0 : _b[1];
+                    const type = (_a = /(.*)] -->/.exec(field)) === null || _a === void 0 ? void 0 : _a[1].trim();
+                    const title = (_b = /# (.*)/.exec(field)) === null || _b === void 0 ? void 0 : _b[1].trim();
                     if (!type || !title)
                         return;
                     if (type === "checklist") {
