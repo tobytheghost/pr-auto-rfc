@@ -48,18 +48,22 @@ import { getPullRequest } from "./queries/getPullRequest";
 
     const radioMatches = body.match(matchRequiredRadio) || ([] as string[]);
 
-    const radioListErrors = radioMatches.map((list) => {
-      const listItems = list.split("\n");
-      const missingItems = listItems.filter((item) => item.startsWith("- [ ]"));
-      if (!missingItems.length) return [];
-      return [
-        `Please review and check at least one of the following items:`,
-        missingItems.join("\n"),
-      ];
-    });
+    const radioListErrors = radioMatches
+      .map((list) => {
+        const listItems = list.split("\n");
+        const missingItems = listItems.filter((item) =>
+          item.startsWith("- [ ]")
+        );
+        if (!missingItems.length) return [];
+        return [
+          `Please review and check at least one of the following items:`,
+          missingItems.join("\n"),
+        ];
+      })
+      .reduce((acc, curr) => [...acc, ...curr], []);
 
     if (checkListErrors.length || radioListErrors.length) {
-      throw new Error([...checkListErrors, ...radioListErrors].join("\n"));
+      throw new Error([...checkListErrors, ...radioListErrors].join("\n\n"));
     }
   } catch (error) {
     setFailed(error.message);
