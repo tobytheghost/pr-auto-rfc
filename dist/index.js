@@ -28200,14 +28200,18 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
         const octokit = (0,github.getOctokit)(token);
         const { body } = yield getPullRequest({ octokit, owner, repo, number });
         const matchRequiredChecklist = /(?<=<!--- rfc-checklist -->\n)((?:.|\n)*?)(?=\n<!--- rfc-checklist -->)/gi;
-        body.match(matchRequiredChecklist).forEach((list) => {
+        const checklistMatches = body.match(matchRequiredChecklist);
+        console.log(checklistMatches);
+        checklistMatches === null || checklistMatches === void 0 ? void 0 : checklistMatches.forEach((list) => {
             list.split("\n").forEach((item) => {
                 if (item.startsWith("- [ ]"))
                     console.log(`Missing checklist item: ${item.replace("- [ ]", "")}`);
             });
         });
         const matchRequiredRadio = /(?<=<!--- rfc-radio -->\n)((?:.|\n)*?)(?=\n<!--- rfc-radio -->)/gi;
-        body.match(matchRequiredRadio).forEach((list) => {
+        const radioMatches = body.match(matchRequiredRadio);
+        console.log(radioMatches);
+        radioMatches === null || radioMatches === void 0 ? void 0 : radioMatches.forEach((list) => {
             const listItems = list.split("\n");
             const checkedItems = listItems.filter((item) => item.startsWith("- [x]"));
             if (checkedItems.length === 0) {
