@@ -28198,8 +28198,10 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
         const owner = github.context.repo.owner;
         const repo = github.context.repo.repo;
         const octokit = (0,github.getOctokit)(token);
-        const pullRequest = yield getPullRequest({ octokit, owner, repo, number });
-        console.log(pullRequest.body);
+        const { body } = yield getPullRequest({ octokit, owner, repo, number });
+        const match = /(?<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)(.*)(?=<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)/g;
+        const matches = body.match(match);
+        console.log(matches);
     });
 })();
 
