@@ -29930,7 +29930,8 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                 .reduce((acc, curr) => [...acc, ...curr], []);
             const matchRequiredRadio = /(?<=<!--- rfc-radio -->\r\n)((?:.|\r|\n)*?)(?=<!--- rfc-radio -->\r\n)/gi;
             const radioMatches = body.match(matchRequiredRadio) || [];
-            const radioListErrors = radioMatches.map((list) => {
+            const radioListErrors = radioMatches
+                .map((list) => {
                 const listItems = list.split("\n");
                 const missingItems = listItems.filter((item) => item.startsWith("- [ ]"));
                 if (!missingItems.length)
@@ -29939,9 +29940,10 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                     `Please review and check at least one of the following items:`,
                     missingItems.join("\n"),
                 ];
-            });
+            })
+                .reduce((acc, curr) => [...acc, ...curr], []);
             if (checkListErrors.length || radioListErrors.length) {
-                throw new Error([...checkListErrors, ...radioListErrors].join("\n"));
+                throw new Error([...checkListErrors, ...radioListErrors].join("\n\n"));
             }
         }
         catch (error) {
