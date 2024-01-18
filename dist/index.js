@@ -29914,36 +29914,37 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
             const repo = github.context.repo.repo;
             const octokit = (0,github.getOctokit)(token);
             const { body } = yield getPullRequest({ octokit, owner, repo, number });
-            const matchRequiredChecklist = /(?<=<!--- rfc-checklist -->\r\n)((?:.|\r|\n)*?)(?=<!--- rfc-checklist -->\r\n)/gi;
-            const checklistMatches = body.match(matchRequiredChecklist) || [];
-            const checkListErrors = checklistMatches
-                .map((list) => {
-                const listItems = list.split("\n");
-                const missingItems = listItems.filter((item) => item.startsWith("- [ ]"));
-                if (!missingItems.length)
-                    return [];
-                return [
-                    `Please review and check the following items:`,
-                    missingItems.join("\n"),
-                ];
-            })
-                .reduce((acc, curr) => [...acc, ...curr], []);
-            const matchRequiredRadio = /(?<=<!--- rfc-radio -->\r\n)((?:.|\r|\n)*?)(?=<!--- rfc-radio -->\r\n)/gi;
-            const radioMatches = body.match(matchRequiredRadio) || [];
-            const radioListErrors = radioMatches
-                .map((list) => {
-                const listItems = list.split("\n");
-                const missingItems = listItems.filter((item) => item.startsWith("- [ ]"));
-                if (!missingItems.length)
-                    return [];
-                return [
-                    `Please review and check at least one of the following items:`,
-                    missingItems.join("\n"),
-                ];
-            })
-                .reduce((acc, curr) => [...acc, ...curr], []);
-            if (checkListErrors.length || radioListErrors.length) {
-                throw new Error([...checkListErrors, ...radioListErrors].join("\n\n"));
+            const [_, ...forms] = body.split("<!--- rfc-form -->");
+            if (!forms.length)
+                return;
+            const checkedForms = forms.map((form) => {
+                const formFields = form.split("<!--- rfc-end -->");
+                const checkedFields = formFields.map((field) => {
+                    var _a, _b;
+                    const title = (_a = /## (.*)/.exec(field)) === null || _a === void 0 ? void 0 : _a[1];
+                    const type = (_b = /<!--- rfc-input-(.*) -->/.exec(field)) === null || _b === void 0 ? void 0 : _b[1];
+                    if (type === "checklist") {
+                        const missingChecklistItems = field
+                            .split("\n")
+                            .filter((item) => item.startsWith("- [ ]"));
+                        if (!missingChecklistItems.length)
+                            return;
+                        return `Please review and check the following items\n${title}\n${missingChecklistItems.join("\n")}\n`;
+                    }
+                    if (type === "radio") {
+                        const missingRadioItems = field
+                            .split("\n")
+                            .filter((item) => item.startsWith("- [ ]"));
+                        if (!missingRadioItems.length)
+                            return;
+                        return `Please review and check at least one of the following items\n${title}\n${missingRadioItems.join("\n")}\n`;
+                    }
+                    return;
+                }).reduce((acc, curr) => [...acc, ...curr], []);
+                return checkedFields;
+            }).reduce((acc, curr) => [...acc, ...curr], []);
+            if (checkedForms.length) {
+                throw new Error([...checkedForms].join("\n\n"));
             }
         }
         catch (error) {
