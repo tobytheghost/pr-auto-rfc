@@ -28200,9 +28200,6 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
         const octokit = (0,github.getOctokit)(token);
         const { body } = yield getPullRequest({ octokit, owner, repo, number });
         console.log(body);
-        const match = /(?<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)(.*)(?=<=\<\!--(required-(radio|checkbox|text)|(radio|checkbox|text))--\>)/g;
-        const matches = body.match(match).map((match) => match.trim());
-        console.log(matches);
     });
 })();
 
