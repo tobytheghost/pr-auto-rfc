@@ -29914,15 +29914,18 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
             const repo = github.context.repo.repo;
             const octokit = (0,github.getOctokit)(token);
             const { body } = yield getPullRequest({ octokit, owner, repo, number });
-            const [_, ...forms] = body.split("<!--- rfc-form -->");
+            const [_, ...forms] = body.split("<!--- r-form -->");
             if (!forms.length)
                 return console.log("No forms found in PR body");
-            const checkedForms = forms.map((form) => {
-                const formFields = form.split("<!--- rfc-end -->");
+            const checkedForms = forms
+                .map((form) => {
+                const formFields = form.split("<!--- r-input-");
                 return formFields.map((field) => {
                     var _a, _b;
-                    const title = (_a = /# (.*)/.exec(field)) === null || _a === void 0 ? void 0 : _a[1];
-                    const type = (_b = /<!--- rfc-input-(.*) -->/.exec(field)) === null || _b === void 0 ? void 0 : _b[1];
+                    const type = (_a = /(.*) -->/.exec(field)) === null || _a === void 0 ? void 0 : _a[1];
+                    const title = (_b = /# (.*)/.exec(field)) === null || _b === void 0 ? void 0 : _b[1];
+                    if (!type || !title)
+                        throw new Error("Invalid form field ${field}");
                     if (type === "checklist") {
                         const missingChecklistItems = field
                             .split("\n")
@@ -29941,14 +29944,18 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                     }
                     if (type === "text") {
                         // Get value, remove title, remove comments & trim
-                        const value = field.split(`${title}\r\n`)[1].replace(/<!--- (.*?) -->/gi, "").trim();
+                        const value = field
+                            .split(`${title}`)[1]
+                            .replace(/<!--- (.*?) -->/gi, "")
+                            .trim();
                         if (value.length)
                             return;
                         return `Please fill in the following field: "${title}"\n`;
                     }
                     return;
                 });
-            }).reduce((acc, curr) => [...acc, ...curr], []);
+            })
+                .reduce((acc, curr) => [...acc, ...curr], []);
             if (checkedForms.length) {
                 throw new Error([...checkedForms].join("\n"));
             }
