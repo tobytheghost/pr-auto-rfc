@@ -29929,7 +29929,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                             .filter((item) => item.startsWith("- [ ]"));
                         if (!missingChecklistItems.length)
                             return;
-                        return `Please review and check the following items\n${title}\n${missingChecklistItems.join("\n")}\n`;
+                        return `Please review and check the following items\n\n${title}\n${missingChecklistItems.join("\n")}\n`;
                     }
                     if (type === "radio") {
                         const missingRadioItems = field
@@ -29937,13 +29937,13 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                             .filter((item) => item.startsWith("- [ ]"));
                         if (!missingRadioItems.length)
                             return;
-                        return `Please review and check at least one of the following items\n${title}\n${missingRadioItems.join("\n")}\n`;
+                        return `Please review and check at least one of the following items\n\n${title}\n${missingRadioItems.join("\n")}\n`;
                     }
                     return;
                 });
             }).reduce((acc, curr) => [...acc, ...curr], []);
             if (checkedForms.length) {
-                throw new Error([...checkedForms].join("\n\n"));
+                throw new Error([...checkedForms].join("\n"));
             }
         }
         catch (error) {
