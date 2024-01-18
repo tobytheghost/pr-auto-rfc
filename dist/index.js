@@ -29940,8 +29940,11 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                         return `Please review and check at least one of the following items\n\n${title}\n${missingRadioItems.join("\n")}\n`;
                     }
                     if (type === "text") {
-                        const value = field.split(`${title}\r\n`)[1].trim();
-                        console.log("value", value);
+                        // Get value, remove title, remove comments & trim
+                        const value = field.split(`${title}\r\n`)[1].replace(/<!--- (.*?) -->/gi, "").trim();
+                        if (value.length)
+                            return;
+                        return `Please fill in the following field\n\n${title}\n`;
                     }
                     return;
                 });
