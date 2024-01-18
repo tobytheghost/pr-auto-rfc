@@ -28200,7 +28200,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
         const octokit = (0,github.getOctokit)(token);
         const { body } = yield getPullRequest({ octokit, owner, repo, number });
         console.log(body);
-        const matchRequiredChecklist = /(?<=<!--- rfc-checklist -->\n)((?:.|\n)*?)(?=\n<!--- rfc-checklist -->)/gi;
+        const matchRequiredChecklist = /(?<=<!--- rfc-checklist -->)((?:.|\n)*?)(?=<!--- rfc-checklist -->)/gi;
         const checklistMatches = body.match(matchRequiredChecklist);
         checklistMatches === null || checklistMatches === void 0 ? void 0 : checklistMatches.forEach((list) => {
             const listItems = list.split("\n");
@@ -28210,7 +28210,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
                 console.log(missingItems.join("\n"));
             }
         });
-        const matchRequiredRadio = /(?<=<!--- rfc-radio -->\n)((?:.|\n)*?)(?=\n<!--- rfc-radio -->)/gi;
+        const matchRequiredRadio = /(?<=<!--- rfc-radio -->)((?:.|\n)*?)(?=<!--- rfc-radio -->)/gi;
         const radioMatches = body.match(matchRequiredRadio);
         radioMatches === null || radioMatches === void 0 ? void 0 : radioMatches.forEach((list) => {
             const listItems = list.split("\n");
