@@ -30,7 +30,7 @@ import { getPullRequest } from "./queries/getPullRequest";
     const checkedForms = forms.map((form) => {
       const formFields = form.split("<!--- rfc-end -->");
       return formFields.map((field) => {
-        const title = /## (.*)/.exec(field)?.[1];
+        const title = /# (.*)/.exec(field)?.[1];
         const type = /<!--- rfc-input-(.*) -->/.exec(field)?.[1];
 
         if (type === "checklist") {
@@ -51,6 +51,11 @@ import { getPullRequest } from "./queries/getPullRequest";
           return `Please review and check at least one of the following items\n\n${title}\n${missingRadioItems.join(
             "\n"
           )}\n`;
+        }
+
+        if (type === "text") {
+          const value = /<!--- rfc-value -->\r\n(.*)\r\n<!--- rfc-value -->/.exec(field)?.[1].trim();
+          console.log("value", value);
         }
 
         return;
