@@ -29916,7 +29916,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
             const { body } = yield getPullRequest({ octokit, owner, repo, number });
             const [_, ...forms] = body.split("<!--- rfc-form -->");
             if (!forms.length)
-                return;
+                return console.log("No forms found in PR body");
             const checkedForms = forms.map((form) => {
                 const formFields = form.split("<!--- rfc-end -->");
                 return formFields.map((field) => {
