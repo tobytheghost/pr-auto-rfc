@@ -29933,7 +29933,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
             const radioListErrors = radioMatches.map((list) => {
                 const listItems = list.split("\n");
                 const missingItems = listItems.filter((item) => item.startsWith("- [ ]"));
-                if (missingItems.length)
+                if (!missingItems.length)
                     return [];
                 return [
                     `Please review and check at least one of the following items:`,
